@@ -1,7 +1,7 @@
 package src
 
 import (
-	"github.com/ashkan90/auto/utils"
+	"github.com/ashkan90/auto-core/utils"
 	"log"
 )
 
