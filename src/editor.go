@@ -1,6 +1,7 @@
 package src
 
 import (
+	"encoding/json"
 	"errors"
 	"slices"
 	"sync"
@@ -26,6 +27,22 @@ func NewNodeEditor(bus *EventBus) *NodeEditor {
 		connections: make(map[ConnectionId]*Connection[ConnectionBase]),
 		eventBus:    bus,
 	}
+}
+
+func (e *NodeEditor) Deserialize() string {
+	//var str = &strings.Builder{}
+
+	defer e.lock.RUnlock()
+	e.lock.RLock()
+
+	var m = map[string]any{
+		"nodes":       e.nodes,
+		"connections": e.connections,
+	}
+
+	contents, _ := json.Marshal(m)
+
+	return string(contents)
 }
 
 // AddNode, bir düğüm ekler.

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"log"
 	"sync"
 	"sync/atomic"
@@ -64,4 +65,18 @@ func (m *SyncMap) Range(f func(key, value any) bool) {
 	}
 
 	m._map.Range(f)
+}
+
+func (m *SyncMap) MarshalJSON() ([]byte, error) {
+	var _map = make(map[string]any)
+	m.Range(func(key, value any) bool {
+		_map[key.(string)] = value
+		return true
+	})
+	return json.Marshal(_map)
+}
+
+func (m *SyncMap) String() string {
+	contents, _ := m.MarshalJSON()
+	return string(contents)
 }
