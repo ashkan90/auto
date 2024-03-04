@@ -14,6 +14,10 @@ func GetUID() string {
 	return hex.EncodeToString(b)
 }
 
+func ToPtr[T any](v T) *T {
+	return &v
+}
+
 func NewCancellable[T map[string]any](inputs T, fetcher func(f func() T) T) T {
 	return fetcher(func() T {
 		return inputs

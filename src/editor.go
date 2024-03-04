@@ -3,6 +3,7 @@ package src
 import (
 	"encoding/json"
 	"errors"
+	"log"
 	"slices"
 	"sync"
 )
@@ -29,9 +30,26 @@ func NewNodeEditor(bus *EventBus) *NodeEditor {
 	}
 }
 
-func (e *NodeEditor) Deserialize() string {
-	//var str = &strings.Builder{}
+// NewNodeEditorFromJSON used to alias of Serialize
+func NewNodeEditorFromJSON(bus *EventBus, input *JSONEditor) *NodeEditor {
+	return Serialize(bus, input)
+}
 
+// Serialize generates *NodeEditor from JSONEditor struct
+func Serialize(bus *EventBus, input *JSONEditor) *NodeEditor {
+	if input == nil {
+		log.Println("didn't initiate json editor input")
+		return NewNodeEditor(bus)
+	}
+
+	return &NodeEditor{
+		nodes:       input.Nodes,
+		connections: input.Connections,
+		eventBus:    bus,
+	}
+}
+
+func (e *NodeEditor) Deserialize() string {
 	defer e.lock.RUnlock()
 	e.lock.RLock()
 

@@ -273,11 +273,11 @@ func (n *Node[NodeBase]) Data(inputs func() map[string]any) map[string]any {
 }
 
 type Connection[Base ConnectionBase] struct {
-	E            Base
-	Source       NodeId
-	SourceOutput NodeId
-	Target       NodeId
-	TargetInput  NodeId
+	E            Base   `json:"base"`
+	Source       NodeId `json:"source"`
+	SourceOutput NodeId `json:"sourceOutput"`
+	Target       NodeId `json:"target"`
+	TargetInput  NodeId `json:"targetInput"`
 }
 
 func NewConnection(source NodeInterface, sourceOutput NodeId, target NodeInterface, targetInput NodeId) *Connection[ConnectionBase] {
@@ -286,7 +286,7 @@ func NewConnection(source NodeInterface, sourceOutput NodeId, target NodeInterfa
 		log.Panicf("source node doesn't have output with key %s", sourceOutput)
 	}
 	if _, ok := targetNode.Inputs.Get(string(targetInput)); !ok {
-		log.Panicf("target node doesn't have output with key %s", targetInput)
+		log.Panicf("target node doesn't have input with key %s", targetInput)
 	}
 
 	return &Connection[ConnectionBase]{
