@@ -192,6 +192,7 @@ type NodeInterface interface {
 	NodeExecutor
 	NodeData
 	Node() *Node[NodeBase]
+	FromModule() bool
 
 	HasInput(k string) bool
 	AddInput(k string, input InputInterface)
@@ -250,6 +251,10 @@ func (n *Node[Base]) RemoveControl(k string) {
 	n.Controls.Delete(k)
 }
 
+func (n *Node[Base]) FromModule() bool {
+	return false
+}
+
 func (n *Node[Base]) Node() *Node[Base] {
 	return n
 }
@@ -264,7 +269,7 @@ func NewNode() *Node[NodeBase] {
 	}
 }
 
-func (n *Node[NodeBase]) Execute(input string, forward func(output string)) {
+func (n *Node[NodeBase]) Execute(_ string, forward func(output string)) {
 	forward("exec")
 }
 
