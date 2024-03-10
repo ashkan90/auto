@@ -67,13 +67,17 @@ func (m *SyncMap) Range(f func(key, value any) bool) {
 	m._map.Range(f)
 }
 
-func (m *SyncMap) MarshalJSON() ([]byte, error) {
+func (m *SyncMap) ToMap() map[string]any {
 	var _map = make(map[string]any)
 	m.Range(func(key, value any) bool {
 		_map[key.(string)] = value
 		return true
 	})
-	return json.Marshal(_map)
+	return _map
+}
+
+func (m *SyncMap) MarshalJSON() ([]byte, error) {
+	return json.Marshal(m.ToMap())
 }
 
 func (m *SyncMap) String() string {
